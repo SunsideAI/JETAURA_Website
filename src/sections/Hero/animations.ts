@@ -52,7 +52,8 @@ export function buildHeroTimeline(refs: HeroRefs): gsap.core.Timeline {
   });
 
   // ─── Stage 1 (0%–15%): Mist ───────────────────────────────────────
-  tl.to(refs.headline1Ref.current, { y: -10, duration: 0.15 }, 0);
+  // Parallax continues through stage 2 until the fade takes over at 25%
+  tl.to(refs.headline1Ref.current, { y: -10, duration: 0.25 }, 0);
   tl.to(refs.starsRef.current,     { y: 5,   duration: 0.15 }, 0);
 
   // ─── Stage 2 (15%–40%): Emergence ────────────────────────────────
@@ -83,7 +84,7 @@ export function buildHeroTimeline(refs: HeroRefs): gsap.core.Timeline {
   // Headline 1 fades out 25%–33%
   tl.to(
     refs.headline1Ref.current,
-    { opacity: 0, ease: "power3.out", duration: 0.08 },
+    { opacity: 0, ease: "power2.in", duration: 0.08 },
     0.25
   );
 
@@ -106,8 +107,9 @@ export function buildHeroTimeline(refs: HeroRefs): gsap.core.Timeline {
 
   // ─── Stage 3 (40%–65%): Cruise ───────────────────────────────────
   tl.to(refs.jetRef.current,       { scale: 1.0, x: 22, ease: "power2.out", duration: 0.25 }, 0.40);
-  tl.to(refs.cloudBackRef.current, { x: -50, y: 30, ease: "power2.inOut",   duration: 0.25 }, 0.40);
-  tl.to(refs.tailRef.current,      { opacity: 0.6, ease: "power3.out",       duration: 0.15 }, 0.40);
+  // Parallax drift — no easing, linear scrub feel
+  tl.to(refs.cloudBackRef.current, { x: -50, y: 30, duration: 0.25 },                         0.40);
+  tl.to(refs.tailRef.current,      { opacity: 0.6, ease: "power3.out", duration: 0.10 },       0.40);
 
   // Headline 2 in 55%–68%
   tl.fromTo(
@@ -129,19 +131,12 @@ export function buildHeroTimeline(refs: HeroRefs): gsap.core.Timeline {
   // Jet vanish 72%–92%
   tl.to(
     refs.jetRef.current,
-    { scale: 1.18, x: 55, opacity: 0, ease: "power2.inOut", duration: 0.20 },
+    { scale: 1.18, x: 55, opacity: 0, ease: "power2.in", duration: 0.20 },
     0.72
   );
 
-  // Headline 2 out 72%–82%
-  tl.to(
-    refs.headline2Ref.current,
-    { opacity: 0, ease: "power3.out", duration: 0.10 },
-    0.72
-  );
-
-  // Tail out 78%–82%
-  tl.to(refs.tailRef.current, { opacity: 0, ease: "power3.out", duration: 0.04 }, 0.78);
+  // Tail out 78%–85%
+  tl.to(refs.tailRef.current, { opacity: 0, ease: "power2.in", duration: 0.07 }, 0.78);
 
   // HUD descends 80%–100%
   const hudDescProxy = { fl: 410, mach: 0.85 };
@@ -150,7 +145,7 @@ export function buildHeroTimeline(refs: HeroRefs): gsap.core.Timeline {
     {
       fl: 0,
       mach: 0,
-      ease: "power1.in",
+      ease: "power1.out",
       duration: 0.20,
       onUpdate: () => {
         if (refs.flRef.current)   refs.flRef.current.textContent   = formatFL(hudDescProxy.fl);
@@ -160,8 +155,15 @@ export function buildHeroTimeline(refs: HeroRefs): gsap.core.Timeline {
     0.80
   );
 
+  // Headline 2 fades out 82%–92% (spec: "stays visible until scroll 82%")
+  tl.to(
+    refs.headline2Ref.current,
+    { opacity: 0, ease: "power2.in", duration: 0.10 },
+    0.82
+  );
+
   // ─── Stage 5 (88%–100%): Vanish + CTA ────────────────────────────
-  tl.to(refs.ctaRef.current, { opacity: 1, ease: "power3.out", duration: 0.08 }, 0.88);
+  tl.to(refs.ctaRef.current, { opacity: 1, ease: "power2.out", duration: 0.08 }, 0.88);
   tl.to(".scroll-hint",      { opacity: 0.4, ease: "power3.out", duration: 0.04 }, 0.95);
 
   return tl;

@@ -25,7 +25,7 @@ function CloudLayer({ src, alt = "", className = "", layerRef }: CloudLayerProps
         fill
         priority
         sizes="100vw"
-        style={{ objectFit: "cover", objectPosition: "center" }}
+        style={{ objectFit: "cover", objectPosition: "center", mixBlendMode: "screen" }}
       />
     </div>
   );
@@ -37,24 +37,24 @@ export default function Clouds({ backRef, midRef, frontRef, closeRef, backInnerR
       {/* z2 — back cloud: outer div receives scroll transforms, inner div receives idle breath */}
       <div ref={backRef} aria-hidden="true" className="absolute inset-0 z-[2] pointer-events-none">
         <div ref={backInnerRef} className="absolute inset-0">
-          <Image src="/clouds/back.webp" alt="" fill priority sizes="100vw"
-            style={{ objectFit: "cover", objectPosition: "center" }} />
+          <Image src="/clouds/back.png" alt="" fill priority sizes="100vw"
+            style={{ objectFit: "cover", objectPosition: "center", mixBlendMode: "screen" }} />
         </div>
       </div>
 
       {/* z3 — mid cloud: outer div receives scroll transforms, inner div receives idle breath */}
       <div ref={midRef} aria-hidden="true" className="absolute inset-0 z-[3] pointer-events-none">
         <div ref={midInnerRef} className="absolute inset-0">
-          <Image src="/clouds/mid.webp" alt="" fill priority sizes="100vw"
-            style={{ objectFit: "cover", objectPosition: "center" }} />
+          <Image src="/clouds/mid.png" alt="" fill priority sizes="100vw"
+            style={{ objectFit: "cover", objectPosition: "center", mixBlendMode: "screen" }} />
         </div>
       </div>
 
       {/* z5 — front cloud, densest, covers stage 1-2 (no idle animation needed) */}
-      <CloudLayer src="/clouds/front.webp" layerRef={frontRef} className="z-[5]" />
+      <CloudLayer src="/clouds/front.png" layerRef={frontRef} className="z-[5]" />
 
       {/* z7 — close cloud, final cover at stage 5 (no idle animation needed) */}
-      <CloudLayer src="/clouds/close.webp" layerRef={closeRef} className="z-[7] opacity-0" />
+      <CloudLayer src="/clouds/close.png" layerRef={closeRef} className="z-[7] opacity-0" />
     </>
   );
 }

@@ -12,12 +12,12 @@ export default function Jet({ jetRef }: JetProps) {
     >
       <div className="relative w-[60vw] max-w-[1080px]" style={{ aspectRatio: "1800 / 720" }}>
         <Image
-          src="/jet/jet-main.webp"
+          src="/jet/jet-main.png"
           alt=""
           fill
           priority
           sizes="60vw"
-          style={{ objectFit: "contain" }}
+          style={{ objectFit: "contain", objectPosition: "right center", mixBlendMode: "screen" }}
         />
       </div>
     </div>

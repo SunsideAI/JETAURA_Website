@@ -167,7 +167,7 @@ export default function Hero() {
         aria-hidden="true"
         className="absolute inset-0 z-[9] pointer-events-none"
         style={{
-          boxShadow: "inset 0 0 80px 30px rgba(0, 0, 0, 0.8)",
+          boxShadow: "inset 0 0 180px 40px rgba(0, 0, 0, 0.65)",
         }}
       />
 
