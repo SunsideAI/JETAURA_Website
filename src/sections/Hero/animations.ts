@@ -18,6 +18,7 @@ interface HeroRefs {
   machRef: React.RefObject<HTMLSpanElement | null>;
   progressRef: React.RefObject<HTMLSpanElement | null>;
   tailRef: React.RefObject<HTMLDivElement | null>;
+  logoRef: React.RefObject<HTMLDivElement | null>;
   starsRef: React.RefObject<HTMLDivElement | null>;
 }
 
@@ -162,9 +163,18 @@ export function buildHeroTimeline(refs: HeroRefs): gsap.core.Timeline {
     0.82
   );
 
-  // ─── Stage 5 (88%–100%): Vanish + CTA ────────────────────────────
+  // ─── Stage 5 (88%–100%): Vanish + CTA + Logo ─────────────────────
   tl.to(refs.ctaRef.current, { opacity: 1, ease: "power2.out", duration: 0.08 }, 0.88);
-  tl.to(".scroll-hint",      { opacity: 0.4, ease: "power3.out", duration: 0.04 }, 0.95);
+
+  // JETAURA wordmark rises through the clouds — starts slightly low, settles center
+  tl.fromTo(
+    refs.logoRef.current,
+    { opacity: 0, y: 24 },
+    { opacity: 1, y: 0, ease: "power3.out", duration: 0.14 },
+    0.86
+  );
+
+  tl.to(".scroll-hint", { opacity: 0.4, ease: "power3.out", duration: 0.04 }, 0.95);
 
   return tl;
 }

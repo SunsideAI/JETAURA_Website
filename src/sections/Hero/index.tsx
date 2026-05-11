@@ -48,6 +48,7 @@ export default function Hero() {
   const machRef = useRef<HTMLSpanElement>(null);
   const progressRef = useRef<HTMLSpanElement>(null);
   const tailRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
   const starsRef = useRef<HTMLDivElement>(null);
   const hudRef = useRef<HTMLDivElement>(null);
 
@@ -75,6 +76,7 @@ export default function Hero() {
           machRef,
           progressRef,
           tailRef,
+          logoRef,
           starsRef,
         });
 
@@ -95,6 +97,7 @@ export default function Hero() {
       mm.add("(prefers-reduced-motion: reduce), (max-width: 767px)", () => {
         if (jetRef.current) gsap.set(jetRef.current, { opacity: 1, scale: 1, x: 0 });
         if (ctaRef.current) gsap.set(ctaRef.current, { opacity: 1 });
+        if (logoRef.current) gsap.set(logoRef.current, { opacity: 1 });
         if (cloudFrontRef.current) gsap.set(cloudFrontRef.current, { opacity: 0 });
       });
     }, sectionRef);
@@ -178,6 +181,7 @@ export default function Hero() {
         machRef={machRef}
         progressRef={progressRef}
         tailRef={tailRef}
+        logoRef={logoRef}
       />
     </section>
   );
