@@ -10,6 +10,26 @@ export default function HUD({ hudRef, flRef, machRef, progressRef, tailRef }: HU
       className="absolute inset-0 z-[10] pointer-events-none"
       style={{ padding: "18px" }}
     >
+      {/* Top-center — JETAURA wordmark */}
+      <div
+        className="absolute top-0 left-0 right-0 flex justify-center"
+        style={{ padding: "18px" }}
+      >
+        <span
+          style={{
+            fontFamily: "var(--font-display, 'Editorial New', 'Times New Roman', serif)",
+            fontSize: "clamp(36px, 5vw, 64px)",
+            fontWeight: 400,
+            letterSpacing: "0.45em",
+            color: "#F5F2EC",
+            textTransform: "uppercase",
+            lineHeight: 1,
+          }}
+        >
+          JETAURA
+        </span>
+      </div>
+
       {/* Top-left */}
       <div
         className="absolute top-0 left-0"
