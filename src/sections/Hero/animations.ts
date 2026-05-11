@@ -1,3 +1,4 @@
+import type React from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
@@ -34,6 +35,7 @@ function formatProgress(value: number): string {
 
 export function buildHeroTimeline(refs: HeroRefs): gsap.core.Timeline {
   const tl = gsap.timeline({
+    defaults: { ease: "none", duration: 0.25 },
     scrollTrigger: {
       trigger: refs.sectionRef.current,
       start: "top top",
@@ -42,74 +44,60 @@ export function buildHeroTimeline(refs: HeroRefs): gsap.core.Timeline {
       scrub: 1.2,
       anticipatePin: 1,
       onUpdate: (self) => {
-        const p = self.progress;
         if (refs.progressRef.current) {
-          refs.progressRef.current.textContent = formatProgress(p);
+          refs.progressRef.current.textContent = formatProgress(self.progress);
         }
       },
     },
   });
 
   // ─── Stage 1 (0%–15%): Mist ───────────────────────────────────────
-  tl.to(
-    refs.headline1Ref.current,
-    { y: -10, ease: "none" },
-    0
-  );
-  tl.to(
-    refs.starsRef.current,
-    { y: 5, ease: "none" },
-    0
-  );
+  tl.to(refs.headline1Ref.current, { y: -10, duration: 0.15 }, 0);
+  tl.to(refs.starsRef.current,     { y: 5,   duration: 0.15 }, 0);
 
   // ─── Stage 2 (15%–40%): Emergence ────────────────────────────────
-  // Cloud-front dissolves and scales out
   tl.to(
     refs.cloudFrontRef.current,
-    { scale: 2.6, y: 70, opacity: 0, ease: "none" },
+    { scale: 2.6, y: 70, opacity: 0, ease: "power2.inOut", duration: 0.25 },
     0.15
   );
-
-  // Cloud-mid shifts
   tl.to(
     refs.cloudMidRef.current,
-    { scale: 1.4, x: -50, y: 30, opacity: 0.4, ease: "none" },
+    { scale: 1.4, x: -50, y: 30, opacity: 0.4, ease: "power2.inOut", duration: 0.25 },
     0.15
   );
-
-  // Cloud-back drifts
   tl.to(
     refs.cloudBackRef.current,
-    { x: -30, y: 18, opacity: 0.55, ease: "none" },
+    { x: -30, y: 18, opacity: 0.55, ease: "power2.inOut", duration: 0.25 },
     0.15
   );
 
-  // Jet enters starting at 18%, finishing at 38%
+  // Jet enters 18%–38%
   tl.fromTo(
     refs.jetRef.current,
     { opacity: 0, scale: 0.75, x: -40 },
-    { opacity: 1, scale: 1.05, x: 0, ease: "none" },
+    { opacity: 1, scale: 1.05, x: 0, ease: "power2.out", duration: 0.20 },
     0.18
   );
-  // Mark jet entry end at 38% (relative to 18%–38% range in 0.2 units)
 
-  // Headline 1 fades out between 25%–33%
+  // Headline 1 fades out 25%–33%
   tl.to(
     refs.headline1Ref.current,
-    { opacity: 0, ease: "none" },
+    { opacity: 0, ease: "power3.out", duration: 0.08 },
     0.25
   );
 
-  // HUD readouts tick up (FL 0→410, M 0→0.85) through stage 2-3
+  // HUD ticks up 18%–55%
   const hudProxy = { fl: 0, mach: 0 };
   tl.to(
     hudProxy,
     {
       fl: 410,
       mach: 0.85,
-      ease: "none",
+      ease: "power1.in",
+      duration: 0.37,
       onUpdate: () => {
-        if (refs.flRef.current) refs.flRef.current.textContent = formatFL(hudProxy.fl);
+        if (refs.flRef.current)   refs.flRef.current.textContent   = formatFL(hudProxy.fl);
         if (refs.machRef.current) refs.machRef.current.textContent = formatMach(hudProxy.mach);
       },
     },
@@ -117,105 +105,80 @@ export function buildHeroTimeline(refs: HeroRefs): gsap.core.Timeline {
   );
 
   // ─── Stage 3 (40%–65%): Cruise ───────────────────────────────────
-  // Jet scale settles, slight cruise drift
-  tl.to(
-    refs.jetRef.current,
-    { scale: 1.0, x: 22, ease: "none" },
-    0.4
-  );
+  tl.to(refs.jetRef.current,       { scale: 1.0, x: 22, ease: "power2.out", duration: 0.25 }, 0.40);
+  tl.to(refs.cloudBackRef.current, { x: -50, y: 30, ease: "power2.inOut",   duration: 0.25 }, 0.40);
+  tl.to(refs.tailRef.current,      { opacity: 0.6, ease: "power3.out",       duration: 0.15 }, 0.40);
 
-  // Cloud-back continues drift
-  tl.to(
-    refs.cloudBackRef.current,
-    { x: -50, y: 30, ease: "none" },
-    0.4
-  );
-
-  // Tail number annotation appears
-  tl.to(
-    refs.tailRef.current,
-    { opacity: 0.6, ease: "none" },
-    0.4
-  );
-
-  // Headline 2 fades in at 55%–68%
+  // Headline 2 in 55%–68%
   tl.fromTo(
     refs.headline2Ref.current,
     { opacity: 0, y: 110 },
-    { opacity: 1, y: 80, ease: "none" },
+    { opacity: 1, y: 80, ease: "power3.out", duration: 0.13 },
     0.55
   );
 
   // ─── Stage 4 (65%–88%): Approach ─────────────────────────────────
-  // Cloud-close advances from 65%
+  // Cloud-close 65%–100%
   tl.fromTo(
     refs.cloudCloseRef.current,
     { opacity: 0, scale: 1.8 },
-    { opacity: 1, scale: 1.0, ease: "none" },
+    { opacity: 1, scale: 1.0, ease: "power2.inOut", duration: 0.35 },
     0.65
   );
 
-  // Jet disappears between 72%–92%
+  // Jet vanish 72%–92%
   tl.to(
     refs.jetRef.current,
-    { scale: 1.18, x: 55, opacity: 0, ease: "none" },
+    { scale: 1.18, x: 55, opacity: 0, ease: "power2.inOut", duration: 0.20 },
     0.72
   );
 
-  // Headline 2 fades out by 82%
+  // Headline 2 out 72%–82%
   tl.to(
     refs.headline2Ref.current,
-    { opacity: 0, ease: "none" },
+    { opacity: 0, ease: "power3.out", duration: 0.10 },
     0.72
   );
 
-  // Tail number fades at 80%
-  tl.to(
-    refs.tailRef.current,
-    { opacity: 0, ease: "none" },
-    0.78
-  );
+  // Tail out 78%–82%
+  tl.to(refs.tailRef.current, { opacity: 0, ease: "power3.out", duration: 0.04 }, 0.78);
 
-  // HUD descends from 80%
+  // HUD descends 80%–100%
   const hudDescProxy = { fl: 410, mach: 0.85 };
   tl.to(
     hudDescProxy,
     {
       fl: 0,
       mach: 0,
-      ease: "none",
+      ease: "power1.in",
+      duration: 0.20,
       onUpdate: () => {
-        if (refs.flRef.current) refs.flRef.current.textContent = formatFL(hudDescProxy.fl);
+        if (refs.flRef.current)   refs.flRef.current.textContent   = formatFL(hudDescProxy.fl);
         if (refs.machRef.current) refs.machRef.current.textContent = formatMach(hudDescProxy.mach);
       },
     },
-    0.8
+    0.80
   );
 
   // ─── Stage 5 (88%–100%): Vanish + CTA ────────────────────────────
-  // CTA fades in 88%–96%
-  tl.to(
-    refs.ctaRef.current,
-    { opacity: 1, ease: "none" },
-    0.88
-  );
-
-  // Scroll hint fades in 95%–99%
-  tl.to(
-    ".scroll-hint",
-    { opacity: 0.4, ease: "none" },
-    0.95
-  );
+  tl.to(refs.ctaRef.current, { opacity: 1, ease: "power3.out", duration: 0.08 }, 0.88);
+  tl.to(".scroll-hint",      { opacity: 0.4, ease: "power3.out", duration: 0.04 }, 0.95);
 
   return tl;
 }
 
-export function buildIdleAnimations(refs: Pick<HeroRefs, "cloudBackRef" | "cloudMidRef" | "starsRef">): gsap.core.Tween[] {
+interface IdleRefs {
+  cloudBackInnerRef: React.RefObject<HTMLDivElement | null>;
+  cloudMidInnerRef: React.RefObject<HTMLDivElement | null>;
+  starsRef: React.RefObject<HTMLDivElement | null>;
+}
+
+export function buildIdleAnimations(refs: IdleRefs): gsap.core.Tween[] {
   const tweens: gsap.core.Tween[] = [];
 
-  if (refs.cloudBackRef.current) {
+  if (refs.cloudBackInnerRef.current) {
     tweens.push(
-      gsap.to(refs.cloudBackRef.current, {
+      gsap.to(refs.cloudBackInnerRef.current, {
         y: "+=8",
         duration: 8,
         ease: "sine.inOut",
@@ -225,9 +188,9 @@ export function buildIdleAnimations(refs: Pick<HeroRefs, "cloudBackRef" | "cloud
     );
   }
 
-  if (refs.cloudMidRef.current) {
+  if (refs.cloudMidInnerRef.current) {
     tweens.push(
-      gsap.to(refs.cloudMidRef.current, {
+      gsap.to(refs.cloudMidInnerRef.current, {
         y: "+=8",
         duration: 8,
         ease: "sine.inOut",

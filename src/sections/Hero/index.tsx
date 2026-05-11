@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import Clouds from "./Clouds";
@@ -13,7 +13,15 @@ gsap.registerPlugin(ScrollTrigger);
 
 const STAR_COUNT = 60;
 
-function generateStars() {
+interface Star {
+  id: number;
+  top: number;
+  left: number;
+  opacity: number;
+  size: number;
+}
+
+function generateStars(): Star[] {
   return Array.from({ length: STAR_COUNT }, (_, i) => ({
     id: i,
     top: Math.random() * 60,
@@ -23,12 +31,13 @@ function generateStars() {
   }));
 }
 
-const stars = generateStars();
-
 export default function Hero() {
+  const [stars, setStars] = useState<Star[]>([]);
   const sectionRef = useRef<HTMLElement>(null);
   const cloudBackRef = useRef<HTMLDivElement>(null);
+  const cloudBackInnerRef = useRef<HTMLDivElement>(null);
   const cloudMidRef = useRef<HTMLDivElement>(null);
+  const cloudMidInnerRef = useRef<HTMLDivElement>(null);
   const cloudFrontRef = useRef<HTMLDivElement>(null);
   const cloudCloseRef = useRef<HTMLDivElement>(null);
   const jetRef = useRef<HTMLDivElement>(null);
@@ -43,6 +52,11 @@ export default function Hero() {
   const hudRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setStars(generateStars());
+  }, []);
+
+  useEffect(() => {
+    if (stars.length === 0) return;
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
@@ -64,7 +78,7 @@ export default function Hero() {
           starsRef,
         });
 
-        const idleTweens = buildIdleAnimations({ cloudBackRef, cloudMidRef, starsRef });
+        const idleTweens = buildIdleAnimations({ cloudBackInnerRef, cloudMidInnerRef, starsRef });
 
         const starEls = starsRef.current
           ? Array.from(starsRef.current.querySelectorAll<HTMLElement>(".star"))
@@ -86,7 +100,7 @@ export default function Hero() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [stars]);
 
   return (
     <section
@@ -122,6 +136,8 @@ export default function Hero() {
         midRef={cloudMidRef}
         frontRef={cloudFrontRef}
         closeRef={cloudCloseRef}
+        backInnerRef={cloudBackInnerRef}
+        midInnerRef={cloudMidInnerRef}
       />
 
       {/* Jet z4 */}
@@ -151,7 +167,7 @@ export default function Hero() {
         aria-hidden="true"
         className="absolute inset-0 z-[9] pointer-events-none"
         style={{
-          boxShadow: "inset 0 0 120px 60px #0A0A0B",
+          boxShadow: "inset 0 0 80px 30px rgba(0, 0, 0, 0.8)",
         }}
       />
 
