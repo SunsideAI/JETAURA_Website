@@ -2,7 +2,7 @@
 
 import type { HUDProps } from "./types";
 
-export default function HUD({ hudRef, flRef, machRef, progressRef, tailRef }: HUDProps) {
+export default function HUD({ hudRef, flRef, machRef, progressRef, tailRef, logoRef }: HUDProps) {
   return (
     <div
       ref={hudRef}
@@ -10,15 +10,16 @@ export default function HUD({ hudRef, flRef, machRef, progressRef, tailRef }: HU
       className="absolute inset-0 z-[10] pointer-events-none"
       style={{ padding: "18px" }}
     >
-      {/* Top-center — JETAURA wordmark */}
+      {/* Center — JETAURA wordmark, appears in Stage 5 from the clouds */}
       <div
-        className="absolute top-0 left-0 right-0 flex justify-center"
-        style={{ padding: "18px" }}
+        ref={logoRef}
+        className="absolute inset-0 flex items-center justify-center"
+        style={{ opacity: 0 }}
       >
         <span
           style={{
             fontFamily: "var(--font-display, 'Editorial New', 'Times New Roman', serif)",
-            fontSize: "clamp(36px, 5vw, 64px)",
+            fontSize: "clamp(48px, 8vw, 96px)",
             fontWeight: 400,
             letterSpacing: "0.45em",
             color: "#F5F2EC",

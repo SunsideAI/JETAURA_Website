@@ -28,6 +28,7 @@ export interface HUDProps {
   machRef: React.RefObject<HTMLSpanElement | null>;
   progressRef: React.RefObject<HTMLSpanElement | null>;
   tailRef: React.RefObject<HTMLDivElement | null>;
+  logoRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export interface HeadlinesProps {
