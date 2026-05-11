@@ -93,12 +93,25 @@ export default function Hero() {
         };
       });
 
-      // Reduced-motion / mobile fallback: static composition
+      // Mobile / reduced-motion: static composition, no pinning, no parallax
       mm.add("(prefers-reduced-motion: reduce), (max-width: 767px)", () => {
-        if (jetRef.current) gsap.set(jetRef.current, { opacity: 1, scale: 1, x: 0 });
-        if (ctaRef.current) gsap.set(ctaRef.current, { opacity: 1 });
-        if (logoRef.current) gsap.set(logoRef.current, { opacity: 1 });
-        if (cloudFrontRef.current) gsap.set(cloudFrontRef.current, { opacity: 0 });
+        // Jet: centered, full size
+        gsap.set(jetRef.current,       { opacity: 1, scale: 1, x: 0, y: 0 });
+        // Headline 1: visible, no y-offset
+        gsap.set(headline1Ref.current, { opacity: 1, y: 0 });
+        // Headline 2: keep hidden on mobile (too cluttered)
+        gsap.set(headline2Ref.current, { opacity: 0 });
+        // CTA: immediately visible
+        gsap.set(ctaRef.current,       { opacity: 1 });
+        // Logo: immediately visible
+        gsap.set(logoRef.current,      { opacity: 1, y: 0 });
+        // Clouds: hide front (dense cover), hide close (stage 5 cover)
+        gsap.set(cloudFrontRef.current, { opacity: 0 });
+        gsap.set(cloudCloseRef.current, { opacity: 0 });
+        // Back cloud: faint atmosphere
+        gsap.set(cloudBackRef.current,  { opacity: 0.35 });
+        // Mid cloud: hidden to keep it clean
+        gsap.set(cloudMidRef.current,   { opacity: 0 });
       });
     }, sectionRef);
 

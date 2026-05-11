@@ -70,7 +70,7 @@ export default function Headlines({ headline1Ref, headline2Ref, ctaRef }: Headli
       <div
         ref={ctaRef}
         className="absolute bottom-0 left-0 right-0 flex flex-col items-center z-[10] opacity-0"
-        style={{ paddingBottom: "70px", gap: "16px" }}
+        style={{ paddingBottom: "clamp(48px, 8vh, 70px)", gap: "16px" }}
       >
         <button
           style={{
