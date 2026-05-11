@@ -8,7 +8,7 @@ export default function Headlines({ headline1Ref, headline2Ref, ctaRef }: Headli
       {/* Headline 1 — Stage 1-2 */}
       <div
         ref={headline1Ref}
-        className="absolute inset-0 flex items-center justify-center z-[6] pointer-events-none"
+        className="hidden md:flex absolute inset-0 items-center justify-center z-[6] pointer-events-none"
       >
         <h1
           style={{
@@ -38,7 +38,7 @@ export default function Headlines({ headline1Ref, headline2Ref, ctaRef }: Headli
       {/* Headline 2 — Stage 3-4 */}
       <div
         ref={headline2Ref}
-        className="absolute inset-0 flex items-center justify-center z-[6] pointer-events-none opacity-0"
+        className="hidden md:flex absolute inset-0 items-center justify-center z-[6] pointer-events-none opacity-0"
         style={{ transform: "translateY(80px)" }}
       >
         <h2
@@ -69,7 +69,7 @@ export default function Headlines({ headline1Ref, headline2Ref, ctaRef }: Headli
       {/* CTA — Stage 5 */}
       <div
         ref={ctaRef}
-        className="absolute bottom-0 left-0 right-0 flex flex-col items-center z-[10] opacity-0"
+        className="hidden md:flex absolute bottom-0 left-0 right-0 flex-col items-center z-[10] opacity-0"
         style={{ paddingBottom: "clamp(48px, 8vh, 70px)", gap: "16px" }}
       >
         <button

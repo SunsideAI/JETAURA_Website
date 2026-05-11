@@ -8,7 +8,7 @@ export default function Jet({ jetRef }: JetProps) {
     <div
       ref={jetRef}
       aria-hidden="true"
-      className="absolute inset-0 flex items-center justify-center z-[4] pointer-events-none opacity-0"
+      className="hidden md:flex absolute inset-0 items-center justify-center z-[4] pointer-events-none opacity-0"
     >
       <div className="relative w-[90vw] md:w-[60vw] max-w-[1080px]" style={{ aspectRatio: "1800 / 720" }}>
         <Image

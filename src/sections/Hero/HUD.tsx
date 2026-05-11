@@ -7,7 +7,7 @@ export default function HUD({ hudRef, flRef, machRef, progressRef, tailRef, logo
     <div
       ref={hudRef}
       aria-hidden="true"
-      className="hud-wrapper absolute inset-0 z-[10] pointer-events-none"
+      className="hud-wrapper hidden md:block absolute inset-0 z-[10] pointer-events-none"
       style={{ padding: "18px" }}
     >
       {/* Center — JETAURA wordmark, appears in Stage 5 from the clouds */}
