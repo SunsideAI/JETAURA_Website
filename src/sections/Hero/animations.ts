@@ -27,36 +27,57 @@ function formatProgress(value: number): string {
   return `${String(Math.round(value * 100)).padStart(3, "0")}%`;
 }
 
-export function buildVideoHeroTimeline(refs: VideoHeroRefs): void {
-  const tl = gsap.timeline({ defaults: { ease: "none" } });
+// Returns a cleanup function if an event listener was registered.
+export function buildVideoHeroTimeline(refs: VideoHeroRefs): (() => void) | undefined {
+  const video = refs.videoRef.current;
+  if (!video) return undefined;
 
-  // headline1: in 0–12%, fades out 30–45%
-  tl.fromTo(
-    refs.headline1Ref.current,
-    { opacity: 0, y: 20 },
-    { opacity: 1, y: 0, ease: "power2.out", duration: 0.12 },
-    0
-  );
-  tl.to(
-    refs.headline1Ref.current,
-    { opacity: 0, ease: "power2.in", duration: 0.15 },
-    0.30
-  );
+  const create = () => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: refs.sectionRef.current,
+        start: "top top",
+        end: "+=3000",
+        pin: true,
+        anticipatePin: 1,
+        scrub: true,
+        invalidateOnRefresh: true,
+      },
+      defaults: { ease: "none" },
+    });
 
-  // Tail annotation: in 5–20%, out 70–80%
-  tl.fromTo(
-    refs.tailRef.current,
-    { opacity: 0 },
-    { opacity: 0.6, ease: "power2.out", duration: 0.15 },
-    0.05
-  );
-  tl.to(refs.tailRef.current, { opacity: 0, ease: "power2.in", duration: 0.10 }, 0.70);
+    // The canonical scroll-scrub pattern: GSAP tweens currentTime directly.
+    // fromTo is required — without an explicit start value GSAP may read a
+    // non-zero currentTime on refresh and produce a wrong range.
+    tl.fromTo(video, { currentTime: 0 }, { currentTime: video.duration, ease: "none", duration: 1 }, 0);
 
-  // HUD ascent: FL 000→410, M 0.00→0.85 over 10–65%
-  const hudUp = { fl: 0, mach: 0 };
-  tl.to(
-    hudUp,
-    {
+    // Progress readout spans full timeline
+    const prog = { p: 0 };
+    tl.to(prog, {
+      p: 1,
+      ease: "none",
+      duration: 1,
+      onUpdate: () => {
+        if (refs.progressRef.current) refs.progressRef.current.textContent = formatProgress(prog.p);
+      },
+    }, 0);
+
+    // Headline: in 0–12%, out 30–45%
+    tl.fromTo(
+      refs.headline1Ref.current,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, ease: "power2.out", duration: 0.12 },
+      0
+    );
+    tl.to(refs.headline1Ref.current, { opacity: 0, ease: "power2.in", duration: 0.15 }, 0.30);
+
+    // Tail annotation: in 5–20%, out 70–80%
+    tl.fromTo(refs.tailRef.current, { opacity: 0 }, { opacity: 0.6, ease: "power2.out", duration: 0.15 }, 0.05);
+    tl.to(refs.tailRef.current, { opacity: 0, ease: "power2.in", duration: 0.10 }, 0.70);
+
+    // HUD ascent: FL 000→410, M 0.00→0.85 over 10–65%
+    const hudUp = { fl: 0, mach: 0 };
+    tl.to(hudUp, {
       fl: 410,
       mach: 0.85,
       ease: "power1.inOut",
@@ -65,15 +86,11 @@ export function buildVideoHeroTimeline(refs: VideoHeroRefs): void {
         if (refs.flRef.current)   refs.flRef.current.textContent   = formatFL(hudUp.fl);
         if (refs.machRef.current) refs.machRef.current.textContent = formatMach(hudUp.mach);
       },
-    },
-    0.10
-  );
+    }, 0.10);
 
-  // HUD descent: FL 410→0, M 0.85→0 over 80–95%
-  const hudDown = { fl: 410, mach: 0.85 };
-  tl.to(
-    hudDown,
-    {
+    // HUD descent: FL 410→0, M 0.85→0 over 80–95%
+    const hudDown = { fl: 410, mach: 0.85 };
+    tl.to(hudDown, {
       fl: 0,
       mach: 0,
       ease: "power1.out",
@@ -82,36 +99,25 @@ export function buildVideoHeroTimeline(refs: VideoHeroRefs): void {
         if (refs.flRef.current)   refs.flRef.current.textContent   = formatFL(hudDown.fl);
         if (refs.machRef.current) refs.machRef.current.textContent = formatMach(hudDown.mach);
       },
-    },
-    0.80
-  );
+    }, 0.80);
 
-  // JETAURA wordmark rises through last-frame clouds, 82–95%
-  tl.fromTo(
-    refs.logoRef.current,
-    { opacity: 0, y: 24 },
-    { opacity: 1, y: 0, ease: "power3.out", duration: 0.13 },
-    0.82
-  );
+    // JETAURA wordmark: 82–95%
+    tl.fromTo(
+      refs.logoRef.current,
+      { opacity: 0, y: 24 },
+      { opacity: 1, y: 0, ease: "power3.out", duration: 0.13 },
+      0.82
+    );
+  };
 
-  ScrollTrigger.create({
-    trigger: refs.sectionRef.current,
-    start: "top top",
-    end: "+=3000",
-    pin: true,
-    scrub: true,
-    anticipatePin: 1,
-    animation: tl,
-    onUpdate: (self) => {
-      const video = refs.videoRef.current;
-      if (video && !isNaN(video.duration) && video.duration > 0) {
-        video.currentTime = self.progress * video.duration;
-      }
-      if (refs.progressRef.current) {
-        refs.progressRef.current.textContent = formatProgress(self.progress);
-      }
-    },
-  });
+  if (video.readyState >= 1) {
+    create();
+    return undefined;
+  }
+
+  // Video not yet ready — defer until metadata loads
+  video.addEventListener("loadedmetadata", create, { once: true });
+  return () => video.removeEventListener("loadedmetadata", create);
 }
 
 export function buildStarTwinkle(starEls: HTMLElement[]): gsap.core.Tween[] {
