@@ -23,6 +23,24 @@ export default function Hero() {
   const logoRef      = useRef<HTMLDivElement>(null);
   const hudRef       = useRef<HTMLDivElement>(null);
 
+  // Browsers require play() before currentTime seeking works, even for muted videos.
+  // We play + immediately pause so the element is "unlocked" for programmatic seeks.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const unlock = () => {
+      video.play()
+        .then(() => { video.pause(); video.currentTime = 0; })
+        .catch(() => {});
+    };
+    if (video.readyState >= 2) {
+      unlock();
+    } else {
+      video.addEventListener("loadeddata", unlock, { once: true });
+      return () => video.removeEventListener("loadeddata", unlock);
+    }
+  }, []);
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
