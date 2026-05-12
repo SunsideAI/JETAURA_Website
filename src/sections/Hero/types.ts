@@ -36,3 +36,7 @@ export interface HeadlinesProps {
   headline2Ref: React.RefObject<HTMLDivElement | null>;
   ctaRef: React.RefObject<HTMLDivElement | null>;
 }
+
+export interface VideoScrubProps {
+  videoRef: React.RefObject<HTMLVideoElement | null>;
+}
