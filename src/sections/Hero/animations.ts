@@ -104,7 +104,7 @@ export function buildVideoHeroTimeline(refs: VideoHeroRefs): void {
     animation: tl,
     onUpdate: (self) => {
       const video = refs.videoRef.current;
-      if (video && video.readyState >= 1 && video.duration) {
+      if (video && !isNaN(video.duration) && video.duration > 0) {
         video.currentTime = self.progress * video.duration;
       }
       if (refs.progressRef.current) {
