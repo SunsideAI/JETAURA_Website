@@ -89,18 +89,21 @@ export function buildVideoHeroTimeline(refs: VideoHeroRefs): (() => void) | unde
       },
     }, 0.10);
 
-    // HUD descent: FL 410→0, M 0.85→0 over 83–95%
+    // HUD descent: FL 410→0, M 0.85→0 over 83–88%
     const hudDown = { fl: 410, mach: 0.85 };
     tl.to(hudDown, {
       fl: 0,
       mach: 0,
       ease: "power1.out",
-      duration: 0.12,
+      duration: 0.05,
       onUpdate: () => {
         if (refs.flRef.current)   refs.flRef.current.textContent   = formatFL(hudDown.fl);
         if (refs.machRef.current) refs.machRef.current.textContent = formatMach(hudDown.mach);
       },
     }, 0.83);
+
+    // HUD readouts fade out 87–90% — fully gone before nav appears at 92%
+    tl.to([refs.flRef.current, refs.machRef.current], { opacity: 0, ease: "power1.in", duration: 0.03 }, 0.87);
 
     // JETAURA wordmark: 86–95%
     tl.fromTo(
