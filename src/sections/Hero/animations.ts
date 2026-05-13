@@ -62,18 +62,18 @@ export function buildVideoHeroTimeline(refs: VideoHeroRefs): (() => void) | unde
       },
     }, 0);
 
-    // Slogan: in 62–75%, fades out as wordmark arrives 82–90%
+    // Slogan: in 60–72%, out 76–83% — fully gone before wordmark starts
     tl.fromTo(
       refs.headline1Ref.current,
       { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, ease: "power2.out", duration: 0.13 },
-      0.62
+      { opacity: 1, y: 0, ease: "power2.out", duration: 0.12 },
+      0.60
     );
-    tl.to(refs.headline1Ref.current, { opacity: 0, ease: "power2.in", duration: 0.08 }, 0.82);
+    tl.to(refs.headline1Ref.current, { opacity: 0, ease: "power2.in", duration: 0.07 }, 0.76);
 
-    // Tail annotation: in 5–20%, out 70–80%
+    // Tail annotation: in 5–20%, out 70–78%
     tl.fromTo(refs.tailRef.current, { opacity: 0 }, { opacity: 0.6, ease: "power2.out", duration: 0.15 }, 0.05);
-    tl.to(refs.tailRef.current, { opacity: 0, ease: "power2.in", duration: 0.10 }, 0.70);
+    tl.to(refs.tailRef.current, { opacity: 0, ease: "power2.in", duration: 0.08 }, 0.70);
 
     // HUD ascent: FL 000→410, M 0.00→0.85 over 10–65%
     const hudUp = { fl: 0, mach: 0 };
@@ -88,25 +88,25 @@ export function buildVideoHeroTimeline(refs: VideoHeroRefs): (() => void) | unde
       },
     }, 0.10);
 
-    // HUD descent: FL 410→0, M 0.85→0 over 80–95%
+    // HUD descent: FL 410→0, M 0.85→0 over 83–95%
     const hudDown = { fl: 410, mach: 0.85 };
     tl.to(hudDown, {
       fl: 0,
       mach: 0,
       ease: "power1.out",
-      duration: 0.15,
+      duration: 0.12,
       onUpdate: () => {
         if (refs.flRef.current)   refs.flRef.current.textContent   = formatFL(hudDown.fl);
         if (refs.machRef.current) refs.machRef.current.textContent = formatMach(hudDown.mach);
       },
-    }, 0.80);
+    }, 0.83);
 
-    // JETAURA wordmark: 82–95%
+    // JETAURA wordmark: 86–97% — only after slogan is fully gone
     tl.fromTo(
       refs.logoRef.current,
       { opacity: 0, y: 24 },
-      { opacity: 1, y: 0, ease: "power3.out", duration: 0.13 },
-      0.82
+      { opacity: 1, y: 0, ease: "power3.out", duration: 0.11 },
+      0.86
     );
   };
 
