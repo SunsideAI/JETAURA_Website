@@ -9,6 +9,7 @@ interface VideoHeroRefs {
   videoRef: React.RefObject<HTMLVideoElement | null>;
   headline1Ref: React.RefObject<HTMLDivElement | null>;
   logoRef: React.RefObject<HTMLDivElement | null>;
+  navRef: React.RefObject<HTMLDivElement | null>;
   flRef: React.RefObject<HTMLSpanElement | null>;
   machRef: React.RefObject<HTMLSpanElement | null>;
   progressRef: React.RefObject<HTMLSpanElement | null>;
@@ -101,12 +102,20 @@ export function buildVideoHeroTimeline(refs: VideoHeroRefs): (() => void) | unde
       },
     }, 0.83);
 
-    // JETAURA wordmark: 86–97% — only after slogan is fully gone
+    // JETAURA wordmark: 86–95%
     tl.fromTo(
       refs.logoRef.current,
       { opacity: 0, y: 24 },
-      { opacity: 1, y: 0, ease: "power3.out", duration: 0.11 },
+      { opacity: 1, y: 0, ease: "power3.out", duration: 0.09 },
       0.86
+    );
+
+    // Nav: 92–100%, after wordmark is settled
+    tl.fromTo(
+      refs.navRef.current,
+      { opacity: 0, y: 8 },
+      { opacity: 1, y: 0, ease: "power2.out", duration: 0.08 },
+      0.92
     );
   };
 
