@@ -110,10 +110,10 @@ export function buildVideoHeroTimeline(refs: VideoHeroRefs): (() => void) | unde
       0.86
     );
 
-    // Nav: 92–100%, after wordmark is settled
+    // Nav: slides in from top at 92–100%, simultaneously with wordmark settling
     tl.fromTo(
       refs.navRef.current,
-      { opacity: 0, y: 8 },
+      { opacity: 0, y: -12 },
       { opacity: 1, y: 0, ease: "power2.out", duration: 0.08 },
       0.92
     );
