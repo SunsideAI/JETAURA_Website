@@ -1,6 +1,11 @@
 import SmoothScrollProvider from "@/providers/SmoothScrollProvider";
-import Hero from "@/sections/Hero";
-import Benefits from "@/sections/Benefits";
+import Hero         from "@/sections/Hero";
+import Benefits     from "@/sections/Benefits";
+import FlightSearch from "@/sections/FlightSearch";
+import Fleet        from "@/sections/Fleet";
+import Experience   from "@/sections/Experience";
+import Destinations from "@/sections/Destinations";
+import Footer       from "@/sections/Footer";
 
 export default function HeroPlayground() {
   return (
@@ -8,7 +13,11 @@ export default function HeroPlayground() {
       <main style={{ background: "#0A0A0B" }}>
         <Hero />
         <Benefits />
-        <div style={{ height: "100px", background: "#0D0D0F" }} />
+        <FlightSearch />
+        <Fleet />
+        <Experience />
+        <Destinations />
+        <Footer />
       </main>
     </SmoothScrollProvider>
   );
