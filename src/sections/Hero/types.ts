@@ -40,3 +40,7 @@ export interface HeadlinesProps {
 export interface VideoScrubProps {
   videoRef: React.RefObject<HTMLVideoElement | null>;
 }
+
+export interface HeroNavProps {
+  navRef: React.RefObject<HTMLDivElement | null>;
+}

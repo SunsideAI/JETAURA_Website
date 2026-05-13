@@ -6,11 +6,14 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import VideoScrub from "./VideoScrub";
 import HUD from "./HUD";
 import Headlines from "./Headlines";
+import HeroNav from "./HeroNav";
 import { buildVideoHeroTimeline } from "./animations";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
+  const { lang, toggleLang } = useLanguage();
   const sectionRef   = useRef<HTMLElement>(null);
   const videoRef     = useRef<HTMLVideoElement>(null);
   const headline1Ref = useRef<HTMLDivElement>(null);
@@ -21,6 +24,7 @@ export default function Hero() {
   const progressRef  = useRef<HTMLSpanElement>(null);
   const tailRef      = useRef<HTMLDivElement>(null);
   const logoRef      = useRef<HTMLDivElement>(null);
+  const navRef       = useRef<HTMLDivElement>(null);
   const hudRef       = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,6 +39,7 @@ export default function Hero() {
           videoRef,
           headline1Ref,
           logoRef,
+          navRef,
           flRef,
           machRef,
           progressRef,
@@ -78,6 +83,9 @@ export default function Hero() {
         ctaRef={ctaRef}
       />
 
+      {/* Nav — desktop only, fades in at scroll end */}
+      <HeroNav navRef={navRef} />
+
       {/* Mobile static overlay z11 */}
       <div
         className="md:hidden absolute inset-0 z-[11] flex flex-col items-center justify-between pointer-events-none"
@@ -86,16 +94,22 @@ export default function Hero() {
       >
         {/* HUD top */}
         <div
-          className="w-full flex justify-between"
-          style={{
-            padding: "0 14px",
-            fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
-            fontSize: "11px",
-            letterSpacing: "0.2em",
-            color: "rgba(245, 242, 236, 0.6)",
-          }}
+          className="w-full flex justify-between items-center"
+          style={{ padding: "0 14px" }}
         >
-          <span>N° 001 — Sky Brokers</span>
+          <span style={{ fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)", fontSize: "11px", letterSpacing: "0.2em", color: "rgba(245, 242, 236, 0.6)" }}>
+            N° 001 — Sky Brokers
+          </span>
+          {/* Language toggle — mobile */}
+          <button
+            onClick={toggleLang}
+            className="pointer-events-auto"
+            style={{ fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(245, 242, 236, 0.6)", background: "none", border: "none", cursor: "pointer", display: "flex", gap: "4px" }}
+          >
+            <span style={{ opacity: lang === "en" ? 1 : 0.35 }}>EN</span>
+            <span style={{ opacity: 0.3 }}>·</span>
+            <span style={{ opacity: lang === "de" ? 1 : 0.35 }}>DE</span>
+          </button>
         </div>
 
         {/* Center: wordmark + headline */}
@@ -131,27 +145,26 @@ export default function Hero() {
           </h1>
         </div>
 
-        {/* CTA + bottom HUD */}
+        {/* Nav + bottom */}
         <div
           className="flex flex-col items-center pointer-events-auto"
-          style={{ paddingBottom: "clamp(32px, 6vh, 56px)", gap: "12px" }}
+          style={{ paddingBottom: "clamp(32px, 6vh, 56px)", gap: "20px" }}
         >
-          <button
-            style={{
-              fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
-              fontSize: "11px",
-              letterSpacing: "0.25em",
-              textTransform: "uppercase",
-              color: "#B8956A",
-              background: "transparent",
-              border: "0.5px solid rgba(184, 149, 106, 0.7)",
-              padding: "12px 32px",
-              cursor: "pointer",
-              outline: "none",
-            }}
-          >
-            Configure your flight
-          </button>
+          {/* Mobile nav */}
+          <nav>
+            <ul className="flex flex-wrap justify-center list-none m-0 p-0" style={{ gap: "16px 24px" }}>
+              {(lang === "en"
+                ? ["Fleet", "Charter", "Experience", "News", "Blog", "About Us"]
+                : ["Flotte", "Charter", "Erlebnis", "News", "Blog", "Über uns"]
+              ).map((item) => (
+                <li key={item}>
+                  <a href="#" style={{ fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)", fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(245, 242, 236, 0.55)", textDecoration: "none" }}>
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
           <span
             style={{
               fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
