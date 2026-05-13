@@ -9,19 +9,19 @@ const AIRCRAFT = [
   {
     name:  "Gulfstream G650",
     specs: "7,500 nm · 13 PAX · Mach 0.925",
-    img:   "https://images.unsplash.com/photo-1540962351926-511599bfb47d?auto=format&fit=crop&w=900&q=80",
+    img:   "https://images.unsplash.com/photo-1559628233-100c798642d1?auto=format&fit=crop&w=900&q=80",
     desc:  { en: "Ultra long-range excellence.", de: "Ultraweite Reichweite." },
   },
   {
     name:  "Bombardier Global 7500",
     specs: "7,700 nm · 14 PAX · Mach 0.925",
-    img:   "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=900&q=80",
+    img:   "https://images.unsplash.com/photo-1583947581924-860bda6a26df?auto=format&fit=crop&w=900&q=80",
     desc:  { en: "The pinnacle of range.", de: "Maximale Reichweite." },
   },
   {
     name:  "Dassault Falcon 8X",
     specs: "6,450 nm · 12 PAX · Mach 0.90",
-    img:   "https://images.unsplash.com/photo-1474302771520-7a7a76be4a9b?auto=format&fit=crop&w=900&q=80",
+    img:   "https://images.unsplash.com/photo-1540962351926-511599bfb47d?auto=format&fit=crop&w=900&q=80",
     desc:  { en: "European refinement.", de: "Europäische Raffinesse." },
   },
 ];
