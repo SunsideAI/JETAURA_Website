@@ -64,6 +64,12 @@ export default function Hero() {
   }, []);
 
   return (
+    <>
+    {/* Nav lives OUTSIDE the pinned section so position:fixed works correctly.
+        GSAP pin applies transforms to the section element, creating a new
+        containing block that breaks fixed positioning for any child inside it. */}
+    <HeroNav navRef={navRef} />
+
     <section
       ref={sectionRef}
       aria-label="Sky Brokers hero"
@@ -82,9 +88,6 @@ export default function Hero() {
         headline2Ref={headline2Ref}
         ctaRef={ctaRef}
       />
-
-      {/* Nav — desktop only, fades in at scroll end */}
-      <HeroNav navRef={navRef} />
 
       {/* Mobile static overlay z11 */}
       <div
@@ -209,5 +212,6 @@ export default function Hero() {
         logoRef={logoRef}
       />
     </section>
+    </>
   );
 }
