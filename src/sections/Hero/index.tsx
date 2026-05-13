@@ -124,9 +124,9 @@ export default function Hero() {
               margin: 0,
             }}
           >
-            <span style={{ display: "block" }}>Beyond</span>
+            <span style={{ display: "block" }}>Sky is not</span>
             <span style={{ display: "block", fontStyle: "italic", color: "rgba(245, 242, 236, 0.55)" }}>
-              schedules.
+              the limit.
             </span>
           </h1>
         </div>

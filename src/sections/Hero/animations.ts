@@ -62,14 +62,14 @@ export function buildVideoHeroTimeline(refs: VideoHeroRefs): (() => void) | unde
       },
     }, 0);
 
-    // Headline: in 0–12%, out 30–45%
+    // Slogan: in 62–75%, fades out as wordmark arrives 82–90%
     tl.fromTo(
       refs.headline1Ref.current,
       { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, ease: "power2.out", duration: 0.12 },
-      0
+      { opacity: 1, y: 0, ease: "power2.out", duration: 0.13 },
+      0.62
     );
-    tl.to(refs.headline1Ref.current, { opacity: 0, ease: "power2.in", duration: 0.15 }, 0.30);
+    tl.to(refs.headline1Ref.current, { opacity: 0, ease: "power2.in", duration: 0.08 }, 0.82);
 
     // Tail annotation: in 5–20%, out 70–80%
     tl.fromTo(refs.tailRef.current, { opacity: 0 }, { opacity: 0.6, ease: "power2.out", duration: 0.15 }, 0.05);

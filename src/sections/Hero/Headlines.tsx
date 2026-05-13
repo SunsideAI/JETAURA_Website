@@ -22,7 +22,7 @@ export default function Headlines({ headline1Ref, headline2Ref, ctaRef }: Headli
             margin: 0,
           }}
         >
-          <span style={{ display: "block" }}>Beyond</span>
+          <span style={{ display: "block" }}>Sky is not</span>
           <span
             style={{
               display: "block",
@@ -30,7 +30,7 @@ export default function Headlines({ headline1Ref, headline2Ref, ctaRef }: Headli
               color: "rgba(245, 242, 236, 0.55)",
             }}
           >
-            schedules.
+            the limit.
           </span>
         </h1>
       </div>
