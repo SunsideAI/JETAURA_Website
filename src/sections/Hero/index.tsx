@@ -7,13 +7,12 @@ import VideoScrub from "./VideoScrub";
 import HUD from "./HUD";
 import Headlines from "./Headlines";
 import HeroNav from "./HeroNav";
+import MobileNav from "./MobileNav";
 import { buildVideoHeroTimeline } from "./animations";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
-  const { lang, toggleLang } = useLanguage();
   const sectionRef   = useRef<HTMLElement>(null);
   const videoRef     = useRef<HTMLVideoElement>(null);
   const headline1Ref = useRef<HTMLDivElement>(null);
@@ -65,10 +64,11 @@ export default function Hero() {
 
   return (
     <>
-    {/* Nav lives OUTSIDE the pinned section so position:fixed works correctly.
-        GSAP pin applies transforms to the section element, creating a new
-        containing block that breaks fixed positioning for any child inside it. */}
+    {/* Desktop nav: fixed header, fades in at scroll end.
+        Must be outside the pinned section — GSAP pin creates a new containing block. */}
     <HeroNav navRef={navRef} />
+    {/* Mobile nav: hamburger + full-screen overlay */}
+    <MobileNav />
 
     <section
       ref={sectionRef}
@@ -89,34 +89,12 @@ export default function Hero() {
         ctaRef={ctaRef}
       />
 
-      {/* Mobile static overlay z11 */}
+      {/* Mobile static overlay z11 — wordmark + headline centred, no nav (MobileNav handles it) */}
       <div
-        className="md:hidden absolute inset-0 z-[11] flex flex-col items-center justify-between pointer-events-none"
-        style={{ padding: "14px 0" }}
+        className="md:hidden absolute inset-0 z-[11] flex flex-col items-center justify-center pointer-events-none"
         aria-hidden="true"
       >
-        {/* HUD top */}
-        <div
-          className="w-full flex justify-between items-center"
-          style={{ padding: "0 14px" }}
-        >
-          <span style={{ fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)", fontSize: "11px", letterSpacing: "0.2em", color: "rgba(245, 242, 236, 0.6)" }}>
-            N° 001 — Sky Brokers
-          </span>
-          {/* Language toggle — mobile */}
-          <button
-            onClick={toggleLang}
-            className="pointer-events-auto"
-            style={{ fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(245, 242, 236, 0.6)", background: "none", border: "none", cursor: "pointer", display: "flex", gap: "4px" }}
-          >
-            <span style={{ opacity: lang === "en" ? 1 : 0.35 }}>EN</span>
-            <span style={{ opacity: 0.3 }}>·</span>
-            <span style={{ opacity: lang === "de" ? 1 : 0.35 }}>DE</span>
-          </button>
-        </div>
-
-        {/* Center: wordmark + headline */}
-        <div className="flex flex-col items-center gap-6 px-6 text-center">
+        <div className="flex flex-col items-center gap-6 px-8 text-center">
           <span
             className="jetaura-wordmark"
             style={{
@@ -148,37 +126,20 @@ export default function Hero() {
           </h1>
         </div>
 
-        {/* Nav + bottom */}
-        <div
-          className="flex flex-col items-center pointer-events-auto"
-          style={{ paddingBottom: "clamp(32px, 6vh, 56px)", gap: "20px" }}
+        {/* Est. bottom */}
+        <span
+          style={{
+            position: "absolute",
+            bottom: "20px",
+            left: "20px",
+            fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
+            fontSize: "11px",
+            letterSpacing: "0.2em",
+            color: "rgba(245, 242, 236, 0.5)",
+          }}
         >
-          {/* Mobile nav */}
-          <nav>
-            <ul className="flex flex-wrap justify-center list-none m-0 p-0" style={{ gap: "16px 24px" }}>
-              {(lang === "en"
-                ? ["Fleet", "Charter", "Experience", "News", "Blog", "About Us"]
-                : ["Flotte", "Charter", "Erlebnis", "News", "Blog", "Über uns"]
-              ).map((item) => (
-                <li key={item}>
-                  <a href="#" style={{ fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)", fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(245, 242, 236, 0.55)", textDecoration: "none" }}>
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <span
-            style={{
-              fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
-              fontSize: "11px",
-              letterSpacing: "0.2em",
-              color: "rgba(245, 242, 236, 0.6)",
-            }}
-          >
-            Est. 2026 · Frankfurt
-          </span>
-        </div>
+          Est. 2026 · Frankfurt
+        </span>
       </div>
 
       {/* Grain overlay z8 */}

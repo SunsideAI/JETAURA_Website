@@ -54,19 +54,26 @@ export default function Benefits() {
       }}
     >
       <div
-        style={{
-          maxWidth: "1400px",
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-        }}
+        className="grid grid-cols-2 md:grid-cols-4"
+        style={{ maxWidth: "1400px", margin: "0 auto" }}
       >
-        {items.map((item, i) => (
+        {items.map((item, i) => {
+          // Mobile 2×2 borders: right on left column (i=0,2), bottom on top row (i=0,1)
+          // Desktop 4-col borders: right on first 3 items (i<3), no bottom
+          const borderClass = [
+            i % 2 === 0 ? "border-r" : "",          // mobile col-0 → right border
+            i < 2       ? "border-b md:border-b-0" : "", // mobile row-0 → bottom border (remove on desktop)
+            i === 1     ? "md:border-r" : "",         // desktop: col-1 also needs right border
+            i === 3     ? "border-r-0" : "",          // desktop col-3: no right border (already 0 from i%2)
+          ].filter(Boolean).join(" ");
+
+          return (
           <div
             key={item.title}
+            className={borderClass}
             style={{
-              padding: "clamp(32px, 4vw, 52px) clamp(28px, 3.5vw, 52px)",
-              borderRight: i < 3 ? "0.5px solid rgba(245, 242, 236, 0.07)" : "none",
+              padding: "clamp(28px, 4vw, 52px) clamp(20px, 3.5vw, 52px)",
+              borderColor: "rgba(245, 242, 236, 0.07)",
               display: "flex",
               flexDirection: "column",
               gap: "16px",
@@ -96,7 +103,8 @@ export default function Benefits() {
               {item.desc}
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
