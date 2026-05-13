@@ -58,6 +58,7 @@ export default function FlightSearch() {
 
   return (
     <section
+      id="charter"
       style={{
         background:  "#0D0D0F",
         borderTop:   "0.5px solid rgba(245, 242, 236, 0.07)",
@@ -68,21 +69,20 @@ export default function FlightSearch() {
         <h2
           style={{
             fontFamily:    DISPLAY,
-            fontSize:      "clamp(26px, 4vw, 36px)",
+            fontSize:      "clamp(26px, 4vw, 48px)",
             fontWeight:    400,
             color:         "#F5F2EC",
             margin:        "0 0 clamp(40px, 5vw, 64px)",
-            lineHeight:    1.15,
-            letterSpacing: "-0.01em",
+            lineHeight:    1.1,
+            letterSpacing: "-0.02em",
           }}
         >
           {t.heading}
         </h2>
 
-        <div
-          className="flex flex-col md:flex-row"
-          style={{ gap: "0", alignItems: "flex-end" }}
-        >
+        {/* Desktop: row. Mobile: stacked with divider swap button */}
+        <div className="flex flex-col md:flex-row md:items-end" style={{ gap: 0 }}>
+
           {/* FROM */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "10px" }}>
             <label
@@ -112,29 +112,35 @@ export default function FlightSearch() {
             />
           </div>
 
-          {/* SWAP */}
+          {/* SWAP — horizontal on desktop, full-width divider row on mobile */}
           <button
             onClick={swap}
             aria-label="Swap airports"
+            className="flex items-center justify-center md:justify-start"
             style={{
-              background:    "none",
-              border:        "none",
-              cursor:        "pointer",
-              padding:       "0 clamp(12px, 2vw, 24px)",
-              paddingBottom: "10px",
-              color:         "rgba(245, 242, 236, 0.4)",
-              fontFamily:    MONO,
-              fontSize:      "16px",
-              lineHeight:    1,
-              flexShrink:    0,
+              background: "none",
+              border:     "none",
+              cursor:     "pointer",
+              color:      "rgba(245, 242, 236, 0.35)",
+              fontFamily: MONO,
+              fontSize:   "14px",
+              lineHeight: 1,
+              flexShrink: 0,
+              // Mobile: full-width row with top/bottom padding
+              padding:       "18px 0",
+              // Desktop override via class below
             }}
           >
-            ↔
+            <span className="md:hidden" style={{ marginRight: "10px", fontSize: "10px", letterSpacing: "0.15em" }}>
+              {t.fromLabel} ↕ {t.toLabel}
+            </span>
+            <span className="hidden md:inline" style={{ padding: "0 clamp(12px, 2vw, 24px)", paddingBottom: "10px" }}>↔</span>
           </button>
 
           {/* TO */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "10px" }}>
             <label
+              className="hidden md:block"
               style={{
                 fontFamily:    MONO,
                 fontSize:      "10px",
@@ -177,6 +183,8 @@ export default function FlightSearch() {
               cursor:        "pointer",
               width:         "100%",
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(245,242,236,0.9)")}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(245,242,236,0.5)")}
           >
             {t.cta}
           </button>

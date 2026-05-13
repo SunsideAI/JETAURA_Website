@@ -4,8 +4,22 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import type { HeroNavProps } from "./types";
 
 const ITEMS = {
-  en: ["Fleet", "Charter", "Experience", "News", "Blog", "About"],
-  de: ["Flotte", "Charter", "Erlebnis", "News", "Blog", "Über uns"],
+  en: [
+    { label: "Fleet",      href: "/#fleet" },
+    { label: "Charter",    href: "/#charter" },
+    { label: "Experience", href: "/#experience" },
+    { label: "News",       href: "/news" },
+    { label: "Blog",       href: "/blog" },
+    { label: "About",      href: "/about" },
+  ],
+  de: [
+    { label: "Flotte",     href: "/#fleet" },
+    { label: "Charter",    href: "/#charter" },
+    { label: "Erlebnis",   href: "/#experience" },
+    { label: "News",       href: "/news" },
+    { label: "Blog",       href: "/blog" },
+    { label: "Über uns",   href: "/about" },
+  ],
 };
 
 const MONO    = "var(--font-mono, 'JetBrains Mono', monospace)";
@@ -38,10 +52,10 @@ export default function HeroNav({ navRef }: HeroNavProps) {
       {/* Center: nav items */}
       <nav className="absolute left-1/2" style={{ transform: "translateX(-50%)" }}>
         <ul className="flex items-center list-none m-0 p-0" style={{ gap: "28px" }}>
-          {ITEMS[lang].map((label) => (
-            <li key={label}>
+          {ITEMS[lang].map((item) => (
+            <li key={item.label}>
               <a
-                href="#"
+                href={item.href}
                 style={{
                   fontFamily: MONO,
                   fontSize: "11px",
@@ -55,7 +69,7 @@ export default function HeroNav({ navRef }: HeroNavProps) {
                 onMouseEnter={(e) => (e.currentTarget.style.color = "#F5F2EC")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(245, 242, 236, 0.55)")}
               >
-                {label}
+                {item.label}
               </a>
             </li>
           ))}

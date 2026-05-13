@@ -37,6 +37,7 @@ export default function Fleet() {
 
   return (
     <section
+      id="fleet"
       style={{
         background: "#0A0A0B",
         padding:    "clamp(80px, 10vw, 140px) clamp(20px, 5vw, 80px)",

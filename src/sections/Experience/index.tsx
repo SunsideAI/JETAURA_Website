@@ -38,6 +38,7 @@ export default function Experience() {
 
   return (
     <section
+      id="experience"
       style={{
         background: "#0D0D0F",
         padding:    "clamp(80px, 10vw, 140px) clamp(20px, 5vw, 80px)",

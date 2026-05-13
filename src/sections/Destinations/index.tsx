@@ -10,7 +10,7 @@ const DESTINATIONS = [
   { en: "Dubai",      de: "Dubai",      code: "DXB", img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80" },
   { en: "New York",   de: "New York",   code: "JFK", img: "https://images.unsplash.com/photo-1534430480872-3498386e7856?auto=format&fit=crop&w=600&q=80" },
   { en: "London",     de: "London",     code: "LCY", img: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=600&q=80" },
-  { en: "Monaco",     de: "Monaco",     code: "MCM", img: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=600&q=80" },
+  { en: "Rome",       de: "Rom",        code: "FCO", img: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=600&q=80" },
   { en: "Maldives",   de: "Malediven",  code: "MLE", img: "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=600&q=80" },
 ];
 

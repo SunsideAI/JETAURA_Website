@@ -4,8 +4,22 @@ import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const ITEMS = {
-  en: ["Fleet", "Charter", "Experience", "News", "Blog", "About"],
-  de: ["Flotte", "Charter", "Erlebnis", "News", "Blog", "Über uns"],
+  en: [
+    { label: "Fleet",      href: "/#fleet" },
+    { label: "Charter",    href: "/#charter" },
+    { label: "Experience", href: "/#experience" },
+    { label: "News",       href: "/news" },
+    { label: "Blog",       href: "/blog" },
+    { label: "About",      href: "/about" },
+  ],
+  de: [
+    { label: "Flotte",     href: "/#fleet" },
+    { label: "Charter",    href: "/#charter" },
+    { label: "Erlebnis",   href: "/#experience" },
+    { label: "News",       href: "/news" },
+    { label: "Blog",       href: "/blog" },
+    { label: "Über uns",   href: "/about" },
+  ],
 };
 
 const MONO    = "var(--font-mono, 'JetBrains Mono', monospace)";
@@ -93,10 +107,10 @@ export default function MobileNav() {
           {/* Nav links */}
           <nav className="flex-1 flex flex-col justify-center" style={{ padding: "0 28px" }}>
             <ul className="list-none m-0 p-0 flex flex-col" style={{ gap: "0" }}>
-              {ITEMS[lang].map((label, i) => (
-                <li key={label} style={{ borderBottom: "0.5px solid rgba(245, 242, 236, 0.07)" }}>
+              {ITEMS[lang].map((item, i) => (
+                <li key={item.label} style={{ borderBottom: "0.5px solid rgba(245, 242, 236, 0.07)" }}>
                   <a
-                    href="#"
+                    href={item.href}
                     onClick={() => setOpen(false)}
                     style={{
                       display: "flex",
@@ -112,7 +126,7 @@ export default function MobileNav() {
                       textDecoration: "none",
                     }}
                   >
-                    {label}
+                    {item.label}
                     <span
                       style={{
                         fontFamily: MONO,
