@@ -13,26 +13,25 @@ import { buildVideoHeroTimeline } from "./animations";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
-  const sectionRef   = useRef<HTMLElement>(null);
-  const videoRef     = useRef<HTMLVideoElement>(null);
-  const headline1Ref = useRef<HTMLDivElement>(null);
-  const headline2Ref = useRef<HTMLDivElement>(null);
-  const ctaRef       = useRef<HTMLDivElement>(null);
-  const flRef        = useRef<HTMLSpanElement>(null);
-  const machRef      = useRef<HTMLSpanElement>(null);
-  const progressRef  = useRef<HTMLSpanElement>(null);
-  const tailRef      = useRef<HTMLDivElement>(null);
-  const logoRef      = useRef<HTMLDivElement>(null);
-  const navRef       = useRef<HTMLDivElement>(null);
-  const hudRef       = useRef<HTMLDivElement>(null);
+  const sectionRef         = useRef<HTMLElement>(null);
+  const videoRef           = useRef<HTMLVideoElement>(null);
+  const headline1Ref       = useRef<HTMLDivElement>(null);
+  const headline2Ref       = useRef<HTMLDivElement>(null);
+  const ctaRef             = useRef<HTMLDivElement>(null);
+  const flRef              = useRef<HTMLSpanElement>(null);
+  const machRef            = useRef<HTMLSpanElement>(null);
+  const progressRef        = useRef<HTMLSpanElement>(null);
+  const tailRef            = useRef<HTMLDivElement>(null);
+  const logoRef            = useRef<HTMLDivElement>(null);
+  const navRef             = useRef<HTMLDivElement>(null);
+  const hudRef             = useRef<HTMLDivElement>(null);
+  const mobileWordmarkRef  = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference) and (min-width: 768px)", () => {
-        // buildVideoHeroTimeline returns a cleanup fn if it had to defer via loadedmetadata.
-        // Returning it here lets gsap.matchMedia propagate it when the condition changes.
         return buildVideoHeroTimeline({
           sectionRef,
           videoRef,
@@ -46,15 +45,38 @@ export default function Hero() {
         });
       });
 
-      // Mobile / reduced-motion: pause video at last frame, static overlay handles layout
-      mm.add("(prefers-reduced-motion: reduce), (max-width: 767px)", () => {
+      // Mobile autoplay: video plays through, wordmark animates in on ended
+      mm.add("(max-width: 767px) and (prefers-reduced-motion: no-preference)", () => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const onEnded = () => {
+          gsap.fromTo(
+            mobileWordmarkRef.current,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" }
+          );
+        };
+
+        video.addEventListener("ended", onEnded);
+        video.play().catch(() => {
+          // Autoplay blocked — show wordmark immediately as fallback
+          gsap.set(mobileWordmarkRef.current, { opacity: 1, y: 0 });
+        });
+
+        return () => video.removeEventListener("ended", onEnded);
+      });
+
+      // Reduced-motion: last frame + wordmark immediately visible
+      mm.add("(prefers-reduced-motion: reduce)", () => {
         const video = videoRef.current;
         if (video) {
-          const seekToEnd = () => {
+          const show = () => {
             if (video.duration) video.currentTime = video.duration;
+            gsap.set(mobileWordmarkRef.current, { opacity: 1, y: 0 });
           };
-          if (video.readyState >= 1 && video.duration) seekToEnd();
-          else video.addEventListener("loadedmetadata", seekToEnd, { once: true });
+          if (video.readyState >= 1 && video.duration) show();
+          else video.addEventListener("loadedmetadata", show, { once: true });
         }
       });
     }, sectionRef);
@@ -96,14 +118,17 @@ export default function Hero() {
       >
         <div className="flex flex-col items-center gap-6 px-8 text-center">
           <span
+            ref={mobileWordmarkRef}
             className="jetaura-wordmark"
             style={{
               fontFamily: "var(--font-display, 'Editorial New', 'Times New Roman', serif)",
+              fontSize: "clamp(32px, 9vw, 52px)",
               fontWeight: 400,
-              letterSpacing: "0.25em",
+              letterSpacing: "0.35em",
               color: "#F5F2EC",
               textTransform: "uppercase" as const,
               lineHeight: 1,
+              opacity: 0,
             }}
           >
             JETAURA
