@@ -16,12 +16,12 @@ export default function MobileNav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <>
+    <div className="md:hidden">
       {/* Hamburger button — fixed top-right, mobile only */}
       <button
         onClick={() => setOpen(true)}
         aria-label="Open menu"
-        className="md:hidden fixed top-0 right-0 z-[60]"
+        className="fixed top-0 right-0 z-[60]"
         style={{
           padding: "16px",
           background: "none",
@@ -49,7 +49,7 @@ export default function MobileNav() {
       {/* Full-screen overlay */}
       {open && (
         <div
-          className="md:hidden fixed inset-0 z-[70] flex flex-col"
+          className="fixed inset-0 z-[70] flex flex-col"
           style={{ background: "#0A0A0B" }}
         >
           {/* Top bar */}
@@ -179,6 +179,6 @@ export default function MobileNav() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
