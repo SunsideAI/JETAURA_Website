@@ -15,7 +15,11 @@ export default function SmoothScrollProvider({
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    // autoRaf: false hands RAF control exclusively to GSAP's ticker.
+    // Without this, Lenis runs its own loop in parallel with GSAP's — ScrollTrigger
+    // then reads stale scroll positions and scrub-based animations stall or desync.
     const lenis = new Lenis({
+      autoRaf: false,
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
