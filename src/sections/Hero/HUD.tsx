@@ -1,11 +1,8 @@
 "use client";
 
-import { useLanguage } from "@/contexts/LanguageContext";
 import type { HUDProps } from "./types";
 
 export default function HUD({ hudRef, flRef, machRef, progressRef, tailRef, logoRef }: HUDProps) {
-  const { lang, toggleLang } = useLanguage();
-
   return (
     <div
       ref={hudRef}
@@ -33,20 +30,6 @@ export default function HUD({ hudRef, flRef, machRef, progressRef, tailRef, logo
         >
           JETAURA
         </span>
-      </div>
-
-      {/* Top-left */}
-      <div
-        className="hud-corner absolute top-0 left-0"
-        style={{
-          padding: "18px",
-          fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
-          fontSize: "11px",
-          letterSpacing: "0.2em",
-          color: "rgba(245, 242, 236, 0.6)",
-        }}
-      >
-        N° 001 — Sky Brokers
       </div>
 
       {/* Top-right: FL + Mach readouts */}
@@ -79,30 +62,6 @@ export default function HUD({ hudRef, flRef, machRef, progressRef, tailRef, logo
         Est. 2026 · Frankfurt
       </div>
 
-      {/* Bottom-center: language toggle */}
-      <button
-        onClick={toggleLang}
-        aria-label="Toggle language"
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-auto"
-        style={{
-          padding: "18px",
-          fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
-          fontSize: "11px",
-          letterSpacing: "0.2em",
-          color: "rgba(245, 242, 236, 0.6)",
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          display: "flex",
-          gap: "6px",
-          alignItems: "center",
-        }}
-      >
-        <span style={{ opacity: lang === "en" ? 1 : 0.35, transition: "opacity 300ms" }}>EN</span>
-        <span style={{ opacity: 0.3 }}>·</span>
-        <span style={{ opacity: lang === "de" ? 1 : 0.35, transition: "opacity 300ms" }}>DE</span>
-      </button>
-
       {/* Bottom-right: progress */}
       <div
         className="hud-corner absolute bottom-0 right-0 hidden md:block"
@@ -117,7 +76,7 @@ export default function HUD({ hudRef, flRef, machRef, progressRef, tailRef, logo
         <span ref={progressRef}>000%</span>
       </div>
 
-      {/* Tail number annotation */}
+      {/* Tail annotation */}
       <div
         ref={tailRef}
         className="absolute opacity-0 hidden md:block"
